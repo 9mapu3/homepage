@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お庭のレスキュー特殊伐採隊 | FIRE & FIST</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. 基本変数の定義とリセット --- */
+        :root {
+            --bg-dark: #070707;       /* 漆黒 */
+            --bg-card: #121212;       /* カード背景 */
+            --primary-red: #e51e25;   /* 特徴的なレスキューレッド */
+            --primary-red-hover: #b8141a;
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --font-noto: 'Noto Sans JP', sans-serif;
+            --font-mont: 'Montserrat', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: var(--font-noto);
+            overflow-x: hidden;
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        .en-font {
+            font-family: var(--font-mont);
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* 背景グリッド線風のテクスチャ（モダン・堅牢感の演出） */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px),
+                        linear-gradient(180deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 80px 80px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- 2. ヘッダー --- */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 6%;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--primary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-red);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .contact-btn-mini {
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 14px 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            border: 2px solid var(--primary-red);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .contact-btn-mini::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .contact-btn-mini:hover {
+            color: var(--primary-red);
+            border-color: #fff;
+        }
+
+        .contact-btn-mini:hover::before {
+            left: 0;
+        }
+
+        /* --- 3. メインビジュアル (HERO) --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            background: linear-gradient(135deg, rgba(7,7,7,1) 35%, rgba(229,30,37,0.15) 100%), 
+                        url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=1920') no-repeat center center/cover;
+            border-bottom: 8px solid var(--primary-red);
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-sub {
+            color: var(--primary-red);
+            font-size: 20px;
+            letter-spacing: 8px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hero-sub::before {
+            content: "";
+            display: inline-block;
+            width: 40px;
+            height: 4px;
+            background-color: var(--primary-red);
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 6vw, 76px);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+
+        .hero-title span {
+            color: var(--primary-red);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 650px;
+            line-height: 1.8;
+        }
+
+        /* 下へのスクロールを促す目印 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--text-gray);
+            z-index: 10;
+        }
+
+        .scroll-indicator::after {
+            content: "";
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--primary-red), transparent);
+            animation: scrollLine 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* --- 4. 復活：強烈なキャッチコピーセクション (INTRO) --- */
+        .intro-section {
+            padding: 140px 8%;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%);
+            position: relative;
+            z-index: 3;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .intro-badge {
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            display: inline-block;
+            margin-bottom: 30px;
+            transform: skewX(-10deg);
+        }
+
+        .intro-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .intro-heading {
+            font-size: clamp(28px, 4vw, 46px);
+            font-weight: 900;
+            line-height: 1.5;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            border-left: 8px solid var(--primary-red);
+            padding-left: 24px;
+        }
+
+        .intro-heading span {
+            color: var(--primary-red);
+            background: linear-gradient(transparent 70%, rgba(229, 30, 37, 0.2) 70%);
+        }
+
+        .intro-body {
+            font-size: clamp(16px, 1.8vw, 20px);
+            color: #e0e0e0;
+            line-height: 2.2;
+            font-weight: 700;
+        }
+
+        .intro-body p {
+            margin-bottom: 25px;
+        }
+
+        /* --- セクション共通ヘッダー --- */
+        .section-header {
+            text-align: center;
+            margin-bottom: 90px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 54px);
+            font-weight: 900;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            color: var(--primary-red);
+            font-size: 15px;
+            letter-spacing: 8px;
+            font-weight: 900;
+        }
+
+        /* --- 5. 施工実績 (WORKS) --- */
+        .works-section {
+            padding: 140px 6%;
+            background-color: #080808;
+            position: relative;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .work-card {
+            background-color: var(--bg-card);
+            border: 1px solid #1f1f1f;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-red);
+            box-shadow: 0 15px 40px rgba(229,30,37,0.15);
+        }
+
+        .work-image-wrapper {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .work-image-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(18,18,18,1) 0%, rgba(18,18,18,0) 40%);
+            z-index: 2;
+        }
+
+        .work-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .work-card:hover .work-image {
+            transform: scale(1.08);
+        }
+
+        .work-info {
+            padding: 30px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .work-tag {
+            display: inline-block;
+            font-size: 11px;
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 5px 14px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            transform: skewX(-8deg);
+        }
+
+        .work-title {
+            font-size: 19px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: var(--text-white);
+            transition: var(--transition);
+        }
+
+        .work-card:hover .work-title {
+            color: var(--primary-red);
+        }
+
+        /* --- 6. 会社案内 (COMPANY TILES - 尾上建設風) --- */
+        .company-section {
+            padding: 140px 6%;
+            background-color: #0d0d0d;
+            border-top: 1px solid #1a1a1a;
+            position: relative;
+        }
+
+        .nav-tile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .nav-tile {
+            position: relative;
+            height: 420px;
+            display: flex;
+            align-items: flex-end;
+            padding: 50px;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            border-left: 6px solid var(--primary-red);
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            transition: var(--transition);
+        }
+
+        /* ホバー時のカード浮き沈み */
+        .nav-tile:hover {
+            transform: translateY(-5px);
+            border-left-color: #fff;
+        }
+
+        /* グラデーションオーバーレイ（未ホバー時） */
+        .nav-tile::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(7,7,7,0.95) 15%, rgba(7,7,7,0.1) 80%);
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        /* グラデーションオーバーレイ（ホバー時：尾上建設のような強烈なブランドカラー透過に変化） */
+        .nav-tile::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(229,30,37,0.9) 0%, rgba(7,7,7,0.8) 100%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .nav-tile:hover::after {
+            opacity: 1;
+        }
+
+        .nav-tile-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .nav-tile:hover .nav-tile-content {
+            transform: translateY(-10px);
+        }
+
+        .nav-tile-num {
+            font-size: 54px;
+            color: var(--primary-red);
+            line-height: 1;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .nav-tile:hover .nav-tile-num {
+            color: #fff;
+            transform: scale(1.1);
+            display: inline-block;
+        }
+
+        .nav-tile-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* タイトル下の細いライン */
+        .nav-tile-title::after {
+            content: "";
+            flex-grow: 1;
+            height: 2px;
+            background-color: rgba(255,255,255,0.15);
+            transition: var(--transition);
+        }
+
+        .nav-tile:hover .nav-tile-title::after {
+            background-color: #fff;
+        }
+
+        .nav-tile-desc {
+            font-size: 15px;
+            color: var(--text-gray);
+            line-height: 1.7;
+            transition: var(--transition);
+        }
+
+        .nav-tile:hover .nav-tile-desc {
+            color: #ffffff;
+        }
+
+        /* --- 7. コンタクトエリア (CTA) --- */
+        .cta {
+            padding: 120px 6%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-red) 0%, #b8141a 100%);
+            color: var(--text-white);
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* 斜めストライプ風の背景透過装飾 */
+        .cta::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0, 0, 0, 0.03) 40px, rgba(0, 0, 0, 0.03) 80px);
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            line-height: 1.3;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            padding: 24px 70px;
+            font-size: 20px;
+            font-weight: 900;
+            border-radius: 0;
+            transition: var(--transition);
+            letter-spacing: 3px;
+            border: 2px solid var(--bg-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cta-btn:hover {
+            background-color: #ffffff;
+            color: var(--primary-red);
+            border-color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        /* --- 8. フッター --- */
+        footer {
+            background-color: #040404;
+            padding: 50px 6%;
+            text-align: center;
+            color: #555555;
+            font-size: 14px;
+            border-top: 1px solid #111;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- レスポンシブ対応 --- */
+        @media (max-width: 1024px) {
+            .works-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 25px 5%;
+            }
+            .nav-links {
+                display: none; /* スマホ時のメニューは後ほど実装 */
+            }
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-tile-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .nav-tile {
+                height: 340px;
+                padding: 30px;
+            }
+            .intro-section {
+                padding: 100px 5%;
+            }
+            .intro-heading {
+                padding-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="logo">FIRE<span>&</span>FIST</div>
+        <nav class="nav-links">
+            <a href="#works">施工実績</a>
+            <a href="#company">会社案内</a>
+            <a href="#contact" class="contact-btn-mini">無料相談</a>
+        </nav>
+    </header>
+
+    <!-- メインビジュアル -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-sub en-font">PORTFOLIO & PROFILE</div>
+            <h1 class="hero-title">
+                私たちの技術と、<br><span>会社について。</span>
+            </h1>
+            <p class="hero-desc">
+                これまでの施工実績と、私たちがどのような思いで現場に立ち、鍛え、地域を守り続けているかをご紹介します。
+            </p>
+        </div>
+        <!-- スクロールを促すインジケーター -->
+        <div class="scroll-indicator en-font">SCROLL DOWN</div>
+    </section>
+
+    <!-- 強烈なキャッチコピーセクション（復活＆インパクト強化） -->
+    <section class="intro-section">
+        <div class="intro-container">
+            <span class="intro-badge">OUR MISSION</span>
+            <h2 class="intro-heading">
+                「うちでは切れません」と<br><span>断られた木こそ、私たちの出番です。</span>
+            </h2>
+            <div class="intro-body">
+                <p>隣の家との狭い隙間、電線のすぐそば、斜面の巨木。</p>
+                <p>私たちはただ木を切るだけでなく、鍛え上げた身体と、ロープ1本で高所に挑む確かな「特殊伐採技術」を持っています。</p>
+                <p>街の安全を守るレスキュー隊のような機動力で、あなたのお庭の「困った」を、チーム一丸となって一撃で解決します。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. 施工実績セクション -->
+    <section id="works" class="works-section">
+        <div class="section-header">
+            <p class="section-subtitle en-font">WORKS</p>
+            <h2 class="section-title">施工実績</h2>
+        </div>
+
+        <div class="works-grid">
+            <!-- 実績 01 -->
+            <div class="work-card">
+                <div class="work-image-wrapper">
+                    <!-- 特殊伐採（ロープ高所作業）が直感的にわかる仮画像 -->
+                    <div class="work-image" style="background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=600');"></div>
+                </div>
+                <div class="work-info">
+                    <span class="work-tag">特殊伐採 / 狭所</span>
+                    <h3 class="work-title">隣家との隙間わずか50cm。電線に囲まれた巨木のロープ吊り下ろし伐採</h3>
+                </div>
+            </div>
+
+            <!-- 実績 02 -->
+            <div class="work-card">
+                <div class="work-image-wrapper">
+                    <!-- 災害現場や大きな作業が直感的にわかる仮画像 -->
+                    <div class="work-image" style="background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=600');"></div>
+                </div>
+                <div class="work-info">
+                    <span class="work-tag">緊急対応 / 災害対策</span>
+                    <h3 class="work-title">台風で半傾斜したお寺の裏山スギ、緊急レスキュー伐採</h3>
+                </div>
+            </div>
+
+            <!-- 実績 03 -->
+            <div class="work-card">
+                <div class="work-image-wrapper">
+                    <!-- 住宅地でのお庭すっきり作業が直感的にわかる仮画像 -->
+                    <div class="work-image" style="background-image: url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=600');"></div>
+                </div>
+                <div class="work-info">
+                    <span class="work-tag">個人邸 / 大木処分</span>
+                    <h3 class="work-title">数十年放置されたお庭の巨木を根本からすっきり伐採・処分</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 会社案内・詳細セクション -->
+    <section id="company" class="company-section">
+        <div class="section-header">
+            <p class="section-subtitle en-font">COMPANY & BRAND</p>
+            <h2 class="section-title">会社案内</h2>
+        </div>
+
+        <div class="nav-tile-grid">
+
+            <!-- タイル 01：強み（特殊伐採） -->
+            <div class="nav-tile" style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800');">
+                <div class="nav-tile-content">
+                    <div class="nav-tile-num en-font">01</div>
+                    <h3 class="nav-tile-title">私たちの強み</h3>
+                    <p class="nav-tile-desc">他社に断られた難所もロープ一本で解決する「特殊伐採技術」と、抜群のチームワークについて紹介します。</p>
+                </div>
+            </div>
+
+            <!-- タイル 02：安全と地域のために（ボクシング & 消防車） -->
+            <div class="nav-tile" style="background-image: url('https://images.unsplash.com/photo-1517438476312-12d799797202?auto=format&fit=crop&q=80&w=800');">
+                <div class="nav-tile-content">
+                    <div class="nav-tile-num en-font">02</div>
+                    <h3 class="nav-tile-title">安全と地域のために</h3>
+                    <p class="nav-tile-desc">なぜ鍛えるのか。なぜ消防車なのか。街を守るレスキューとしての高い志と、社長の熱い想い。</p>
+                </div>
+            </div>
+
+            <!-- タイル 03：会社概要（基本情報） -->
+            <div class="nav-tile" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800');">
+                <div class="nav-tile-content">
+                    <div class="nav-tile-num en-font">03</div>
+                    <h3 class="nav-tile-title">代表挨拶・会社概要</h3>
+                    <p class="nav-tile-desc">代表のプロフィールや、基本情報（住所・アクセス）、チームメンバー紹介はこちらから。</p>
+                </div>
+            </div>
+
+            <!-- タイル 04：採用情報 / お仕事について -->
+            <div class="nav-tile" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800');">
+                <div class="nav-tile-content">
+                    <div class="nav-tile-num en-font">04</div>
+                    <h3 class="nav-tile-title">採用情報</h3>
+                    <p class="nav-tile-desc">タフでカッコいい仕事がしたい仲間を募集。未経験からプロの特殊伐採職人を育てる環境があります。</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- お問い合わせ -->
+    <section id="contact" class="cta">
+        <h2 class="cta-title">お見積もり・ご相談は完全無料</h2>
+        <a href="mailto:info@example.com" class="cta-btn">無料相談フォームへ</a>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 FIRE & FIST Special Tree Felling. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
